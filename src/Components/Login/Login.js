@@ -8,22 +8,21 @@ import {
 } from '@mui/material';
 import { Link } from "react-router-dom"
 import * as Yup from 'yup';
-import UsernameField from '../UsernameField/UsernameField';
-import PasswordField from '../PasswordField/PasswordField';
+import UsernameField from '../UsernameField/UsernameField'
+import PasswordField from '../PasswordField/PasswordField'
 import { useFormik } from 'formik';
 
 const Login = () => {
-  const [rememberMe, setRememberMe] = useState(false);
-  const [username, setUsername] = useState('');
+  const [rememberMe, setRememberMe] = useState(false)
+  const [username, setUsername] = useState(localStorage.getItem('usernameRemember') || '')
 
   useEffect(() => {
-    const savedUsername = localStorage.getItem('usernameRemember');
-    console.log(savedUsername)
+    const savedUsername = localStorage.getItem('usernameRemember')
     if (savedUsername) {
       setUsername(savedUsername);
       setRememberMe(true);
     }
-  }, []);
+  }, [])
 
   const validationSchema = Yup.object().shape({
     username: Yup.string().required('Se requiere nombre de usuario'),
@@ -31,19 +30,18 @@ const Login = () => {
   })
 
   const formik = useFormik({
-    initialValues: { username: username || '', password: '' },
+    initialValues: { username: username , password: '' },
     validationSchema: validationSchema,
     onSubmit: (values) => handleSubmit(values)
   })
 
   const handleSubmit = (values) => {
-    console.log(values);
     if (rememberMe) {
       localStorage.setItem('usernameRemember', values.username);
     } else {
       localStorage.removeItem('usernameRemember');
     }
-  };
+  }
 
   return (
     <Box
@@ -97,7 +95,7 @@ const Login = () => {
             </Box>
           </form>
       </Box>
-  );
+  )
 }
 
-export default Login;
+export default Login
