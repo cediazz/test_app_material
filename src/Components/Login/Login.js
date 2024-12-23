@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import {
   Box,
   Button,
@@ -7,24 +7,43 @@ import {
   Typography,
 } from '@mui/material';
 import { Link } from "react-router-dom"
-import { Formik, Form} from 'formik';
 import * as Yup from 'yup';
 import UsernameField from '../UsernameField/UsernameField';
 import PasswordField from '../PasswordField/PasswordField';
+import { useFormik } from 'formik';
 
 const Login = () => {
-  
   const [rememberMe, setRememberMe] = useState(false);
-  
-  const validationSchema = Yup.object().shape({
-    username: Yup.string().required('se requiere nombre de usuario'),
-    password: Yup.string().required('se requiere password'),
+  const [username, setUsername] = useState('');
 
+  useEffect(() => {
+    const savedUsername = localStorage.getItem('usernameRemember');
+    console.log(savedUsername)
+    if (savedUsername) {
+      setUsername(savedUsername);
+      setRememberMe(true);
+    }
+  }, []);
+
+  const validationSchema = Yup.object().shape({
+    username: Yup.string().required('Se requiere nombre de usuario'),
+    password: Yup.string().required('Se requiere password'),
+  })
+
+  const formik = useFormik({
+    initialValues: { username: username || '', password: '' },
+    validationSchema: validationSchema,
+    onSubmit: (values) => handleSubmit(values)
   })
 
   const handleSubmit = (values) => {
-   console.log(values)
-    };
+    console.log(values);
+    if (rememberMe) {
+      localStorage.setItem('usernameRemember', values.username);
+    } else {
+      localStorage.removeItem('usernameRemember');
+    }
+  };
 
   return (
     <Box
@@ -41,48 +60,44 @@ const Login = () => {
       <Typography variant="h4" gutterBottom>
         Iniciar Sesión
       </Typography>
-      <Formik
-        initialValues={{ username: '', password: '' }}
-        validationSchema={validationSchema}
-        onSubmit={(values) => handleSubmit(values)}
-      >
-        <Form>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              width: '300px',
-              bgcolor: 'white',
-              borderRadius: '8px',
-              boxShadow: 3,
-              p: 3,
-            }}
-          >
-            <UsernameField />
-            <PasswordField />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  color="primary"
-                />
-              }
-              label="Recuérdame"
-            />
-            <Button variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
-              Iniciar Sesión
-            </Button>
-            <Typography variant="body2" sx={{ mt: 2 }}>
-              <Link to="/register">
-                ¿No tiene una cuenta? Regístrese
-              </Link>
-            </Typography>
-          </Box>
-        </Form>
-      </Formik>
-    </Box>
+      <form onSubmit={formik.handleSubmit}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                width: '300px',
+                bgcolor: 'white',
+                borderRadius: '8px',
+                boxShadow: 3,
+                p: 3,
+              }}
+            >
+              <UsernameField formik={formik} />
+              <PasswordField formik={formik} />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={rememberMe}
+                    onChange={(e) => {
+                      setRememberMe(e.target.checked);
+                      }}
+                    color="primary"
+                  />
+                }
+                label="Recuérdame"
+              />
+              <Button variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
+                Iniciar Sesión
+              </Button>
+              <Typography variant="body2" sx={{ mt: 2 }}>
+                <Link to="/register">
+                  ¿No tiene una cuenta? Regístrese
+                </Link>
+              </Typography>
+            </Box>
+          </form>
+      </Box>
   );
-};
+}
 
 export default Login;

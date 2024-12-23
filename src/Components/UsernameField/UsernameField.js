@@ -1,18 +1,21 @@
 import {TextField} from '@mui/material';
 import { Field, ErrorMessage } from 'formik';
 
-function UsernameField(){
+function UsernameField(props){
 
     return(
-        <Field
+        <TextField
               name="username"
-              as={TextField}
               type='text'
-              label="Nombre"
+              label="Nombre de usuario"
               variant="outlined"
               fullWidth
               margin="normal"
-              helperText={<ErrorMessage name="username" >{(msg) => <div className='error-message'>{msg}</div>}</ErrorMessage>}
+              value={props.formik.values.username}
+              onChange={props.formik.handleChange}
+              onBlur={props.formik.handleBlur}
+              error={props.formik.touched.username && Boolean(props.formik.errors.username)}
+              helperText={props.formik.touched.username && props.formik.errors.username}
         />
     )
 }
