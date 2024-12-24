@@ -14,7 +14,14 @@ const Register = () => {
   
   const validationSchema = Yup.object().shape({
     username: Yup.string().required('Se requiere nombre de usuario'),
-    password: Yup.string().required('Se requiere password'),
+    password: Yup.string()
+    .required('Se requiere password')
+    .min(8, 'El password debe tener al menos 8 caracteres')
+    .max(20, 'El password debe ser menor o igual a 20 caracteres')
+    .matches(/[A-Za-z]/, 'La contraseña debe contener al menos una letra')
+    .matches(/\d/, 'La contraseña debe contener al menos un número')
+    .matches(/[A-ZÁÉÍÓÚÜÑ]/, 'La contraseña debe contener al menos una mayúscula')
+    .matches(/[a-záéíóúüñ]/, 'La contraseña debe contener al menos una minúscula'),
     email : Yup.string().email('Inserte un email válido').required('Se requiere email'),
   })
 
