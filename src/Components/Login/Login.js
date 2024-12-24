@@ -11,6 +11,7 @@ import * as Yup from 'yup';
 import UsernameField from '../UsernameField/UsernameField'
 import PasswordField from '../PasswordField/PasswordField'
 import { useFormik } from 'formik';
+import authenticate from '../../utils/authentication';
 
 const Login = () => {
   const [rememberMe, setRememberMe] = useState(false)
@@ -35,12 +36,44 @@ const Login = () => {
     onSubmit: (values) => handleSubmit(values)
   })
 
-  const handleSubmit = (values) => {
+  const  handleSubmit = async  (values) => {
     if (rememberMe) {
       localStorage.setItem('usernameRemember', values.username);
     } else {
       localStorage.removeItem('usernameRemember');
     }
+    try {
+      let res = await authenticate(values)
+      console.log(res)
+      if (res.status == 200) {
+          /*localStorage.setItem('refresh', res.data.refresh)
+          localStorage.setItem('access', res.data.access)
+          localStorage.setItem('username', res.data.username)
+          localStorage.setItem('image', res.data.image)
+          localStorage.setItem('user_id', res.data.id)
+          setUser({ 'username': res.data.username, 'image': res.data.image }) //update authenticated user
+          setLoading(false)
+          navigate("/");*/
+      } else if (res.status == 401) {
+         /* Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: res.response.data.detail,
+              confirmButtonColor: '#F27474'
+          });
+          setLoading(false)*/
+      }
+  }
+  catch (error) {
+      /*Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error,
+          confirmButtonColor: '#F27474'
+      });
+      setLoading(false)*/
+
+  }
   }
 
   return (
@@ -88,7 +121,7 @@ const Login = () => {
                 Iniciar Sesión
               </Button>
               <Typography variant="body2" sx={{ mt: 2 }}>
-                <Link to="/register">
+                <Link to="/Register">
                   ¿No tiene una cuenta? Regístrese
                 </Link>
               </Typography>
