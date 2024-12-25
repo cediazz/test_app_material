@@ -3,6 +3,7 @@ import { UserProvider } from "./utils/userContext";
 import Login from './Components/Login/Login';
 import './App.css'
 import Register from './Components/Register/Register';
+import Home from './Components/Home/Home';
 
 function App() {
 
@@ -17,11 +18,9 @@ function App() {
               path="/*" /* All Routes inside this Route */
               element={
                 <>
-                 
-                  
-                        <Routes>
-                         
-                        </Routes>
+                 <Home />
+                 <Routes>
+                </Routes>
                       
                 </>
               }
