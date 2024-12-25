@@ -5,6 +5,8 @@ import {
   Checkbox,
   FormControlLabel,
   Typography,
+  Snackbar,
+  Alert
 } from '@mui/material';
 import { Link } from "react-router-dom"
 import * as Yup from 'yup';
@@ -12,10 +14,20 @@ import UsernameField from '../UsernameField/UsernameField'
 import PasswordField from '../PasswordField/PasswordField'
 import { useFormik } from 'formik';
 import authenticate from '../../utils/authentication';
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  
+  const [snackbarState, setSnackbarState] = useState({
+    open: false,
+    vertical: 'top',
+    horizontal: 'center',
+  });
+  const { vertical, horizontal, open } = snackbarState
+  const [snackbarMessage, setSnackbarMessage] = useState('')
   const [rememberMe, setRememberMe] = useState(false)
   const [username, setUsername] = useState(localStorage.getItem('usernameRemember') || '')
+  const navigate = useNavigate();
 
   useEffect(() => {
     const savedUsername = localStorage.getItem('usernameRemember')
@@ -46,33 +58,18 @@ const Login = () => {
       let res = await authenticate(values)
       console.log(res)
       if (res.status == 200) {
-          /*localStorage.setItem('refresh', res.data.refresh)
-          localStorage.setItem('access', res.data.access)
-          localStorage.setItem('username', res.data.username)
-          localStorage.setItem('image', res.data.image)
-          localStorage.setItem('user_id', res.data.id)
-          setUser({ 'username': res.data.username, 'image': res.data.image }) //update authenticated user
-          setLoading(false)
-          navigate("/");*/
+        localStorage.setItem('access', res.data.token)
+        localStorage.setItem('username', res.data.username)
+        localStorage.setItem('user_id', res.data.userid)
+        navigate("/");
       } else if (res.status == 401) {
-         /* Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: res.response.data.detail,
-              confirmButtonColor: '#F27474'
-          });
-          setLoading(false)*/
+        setSnackbarMessage('Error en la autenticación')
+        setSnackbarState(prev => ({ ...prev, open: true }))
       }
   }
   catch (error) {
-      /*Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: error,
-          confirmButtonColor: '#F27474'
-      });
-      setLoading(false)*/
-
+    setSnackbarMessage('Error')
+    setSnackbarState(prev => ({ ...prev, open: true }))
   }
   }
 
@@ -127,6 +124,12 @@ const Login = () => {
               </Typography>
             </Box>
           </form>
+          {/* Snackbar for notifications */}
+      <Snackbar anchorOrigin={{ vertical, horizontal }} open={open}  >
+        <Alert sx={{ width: '100%' }} severity={'error'}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
       </Box>
   )
 }

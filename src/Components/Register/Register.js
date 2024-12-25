@@ -23,7 +23,7 @@ const Register = () => {
     horizontal: 'center',
   });
   const { vertical, horizontal, open } = snackbarState
-  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarMessage, setSnackbarMessage] = useState('')
   const [snackbarSeverity, setSnackbarSeverity] = useState('success')
 
   const validationSchema = Yup.object().shape({
