@@ -13,10 +13,6 @@ import { Link } from "react-router-dom"
 export default function MyAppBar(props) {
 
 
-    const toggleSidebar = () => {
-        props.setSidebarOpen(!props.sidebarOpen)
-    }
-
     const LogOut = () => {
         localStorage.clear()
     }
@@ -24,7 +20,7 @@ export default function MyAppBar(props) {
     return (
         <AppBar position="fixed" sx={{ backgroundColor: '#2e3440' }}>
             <Toolbar>
-                <IconButton edge="start" color="inherit" onClick={toggleSidebar}>
+                <IconButton edge="start" color="inherit" onClick={props.toggleDrawer(true)}>
                     <MenuIcon />
                 </IconButton>
                 <Typography variant="h6" sx={{ flexGrow: 1 }}>

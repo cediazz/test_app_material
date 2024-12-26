@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import {
-    Typography,
     Box,
     CssBaseline,
 } from '@mui/material';
@@ -10,7 +9,14 @@ import { useNavigate } from "react-router-dom"
 
 const Home = () => {
 
-    const [sidebarOpen, setSidebarOpen] = useState(true)
+    const [drawerOpen, setDrawerOpen] = useState(false);
+
+    const toggleDrawer = (open) => (event) => {
+        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+            return;
+        }
+        setDrawerOpen(open);
+    };
     const userName = localStorage.getItem('username')
     const navigate = useNavigate()
 
@@ -24,8 +30,8 @@ const Home = () => {
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <MyAppBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} userName={userName} />
-            {sidebarOpen && <Sidebar userName={userName} />}
+            <MyAppBar toggleDrawer={toggleDrawer} userName={userName}/>
+            <Sidebar drawerOpen={drawerOpen} toggleDrawer={toggleDrawer} userName={userName} />
         </Box>
     );
 };
