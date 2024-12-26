@@ -21,9 +21,7 @@ export default function Sidebar(props) {
                 width: 250,
                 height: '100vh',
                 backgroundColor: '#f4f4f4',
-                position: 'fixed',
-                top: '64px',
-                left: 0,
+                marginTop: 8,
                 overflowY: 'auto',
                 boxShadow: '2px 0px 5px rgba(0,0,0,0.2)',
             }}

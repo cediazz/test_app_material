@@ -4,30 +4,41 @@ import Login from './Components/Login/Login';
 import './App.css'
 import Register from './Components/Register/Register';
 import Home from './Components/Home/Home';
+import Customers from './Components/Customers/Customers';
+import { Box } from '@mui/material'
+import Welcome from './Components/Welcome/Welcome';
+import Grid from '@mui/material/Grid2'
+import Sidebar from './Components/Home/Sidebar'
 
 function App() {
 
   return (
     <UserProvider>
-      <BrowserRouter>
+    <BrowserRouter>
       <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/Register" element={<Register />} />
-            {/* Routes with Sidebar and Navbar */}
-            <Route
-              path="/*" /* All Routes inside this Route */
-              element={
-                <>
-                 <Home />
-                 <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        {/* Routes with Sidebar and Navbar */}
+        <Route
+          path="/*" /* All Routes inside this Route */
+          element={
+            <Grid container>
+              <Grid item size={3} >
+              <Home />
+              </Grid>
+              <Grid item size={9} >
+                <Routes>
+                  <Route path="/" element={<Welcome />} />
+                  <Route path="/customers" element={<Customers />} />
                 </Routes>
-                      
-                </>
-              }
-            />
-          </Routes>
-        </BrowserRouter>
-    </UserProvider>
+              </Grid>
+              </Grid>
+              
+          }
+        />
+      </Routes>
+    </BrowserRouter>
+  </UserProvider>
   );
 }
 

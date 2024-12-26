@@ -26,20 +26,6 @@ const Home = () => {
             <CssBaseline />
             <MyAppBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} userName={userName} />
             {sidebarOpen && <Sidebar userName={userName} />}
-
-            {/* Contenido Principal */}
-            <Box
-                component="main"
-                sx={{
-                    display: 'flex',
-                    height: '60vh',
-                    flexGrow: 1,
-                    marginLeft: sidebarOpen ? '250px' : '0', transition: 'margin-left 0.3s',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}>
-                <Typography variant="h2">Bienvenido</Typography>
-            </Box>
         </Box>
     );
 };
