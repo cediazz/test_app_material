@@ -9,6 +9,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AddIcon from '@mui/icons-material/Add';
 import { Link } from "react-router-dom"
 import CustomersSearch from './CustomersSearch';
+import CustomersTable from './CustomersTable'
 
 const Customers = () => {
 
@@ -33,6 +34,7 @@ const Customers = () => {
                 </Grid>
             </Grid>
             <CustomersSearch />
+            <CustomersTable />
         </>
     )
 }
