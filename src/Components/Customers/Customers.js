@@ -15,14 +15,14 @@ const Customers = () => {
     return (
         <>
             <Grid container >
-                <Grid item size={8}>
+                <Grid size={{ xs: 12, md: 8, lg: 8 }} >
                     <Typography variant="h6" color='appbar'>
                         Consulta de CLientes
                     </Typography>
 
                 </Grid>
-                <Grid item size={4}>
-                    <Stack spacing={2} direction="row">
+                <Grid size={{ xs: 12, md: 4, lg: 4 }} >
+                    <Stack spacing={1} direction="row">
                         <Link to="/customer-maintenance" >
                             <Button variant="outlined" color='appbar'><AddIcon /> Agregar</Button>
                         </Link>
@@ -31,7 +31,6 @@ const Customers = () => {
                         </Link>
                     </Stack>
                 </Grid>
-
             </Grid>
             <CustomersSearch />
         </>

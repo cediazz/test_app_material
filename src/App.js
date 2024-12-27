@@ -10,6 +10,7 @@ import Grid from '@mui/material/Grid2'
 import { Box } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './utils/colors';
+import Container from '@mui/material/Container';
 
 function App() {
 
@@ -25,11 +26,11 @@ function App() {
             element={
               <ThemeProvider theme={theme}>
                 <Grid container >
-                  <Grid item size={3}>
+                  <Grid item size={{ xs: 12, md: 3, lg: 3 }}>
                     <Home />
                   </Grid>
-                  <Grid item size={9} sx={{ marginTop: 8 }} >
-                    <Box
+                  <Grid item size={{ xs: 12, md: 9, lg: 9 }} sx={{ marginTop: 8 }} >
+                  <Container fixed
                       sx={{
                         bgcolor: 'white',
                         borderRadius: '8px',
@@ -37,9 +38,9 @@ function App() {
                         p: 3,
                         marginTop: 3,
                         width: {
-                          xs: '300px',
-                          sm: '400px',
-                          md: '500px',
+                          xs: '350px',
+                          sm: '360px',
+                          md: '850px',
                           lg: '1000px',
                           xl: '1000px'
                         },
@@ -50,7 +51,7 @@ function App() {
                         <Route path="/" element={<Welcome />} />
                         <Route path="/customers" element={<Customers />} />
                       </Routes>
-                    </Box>
+                    </Container>
                   </Grid>
                 </Grid>
               </ThemeProvider>
