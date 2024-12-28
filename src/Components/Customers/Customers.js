@@ -34,13 +34,13 @@ const Customers = () => {
 
             let res = await postData(url, formData, accessToken)
             console.log(res)
-            if (res.status == 401) {
-                navigate('/login')
-            }
-            else if (res.status == 200)
+            if (res.status == 200)
                 setCustomers(res.data)
         }
         catch (error) {
+            if (error.status == 401)
+                navigate('/login')
+            else
             navigate('/error404')
 
         }
@@ -55,7 +55,7 @@ const Customers = () => {
 
         }
 
-    }, [])
+    }, [formData])
 
     return (
         <Container fixed
@@ -94,7 +94,7 @@ const Customers = () => {
                 </Grid>
             </Grid>
 
-            <CustomersSearch />
+            <CustomersSearch setFormData={setFormData} />
             <CustomersTable customers={customers} />
         </Container>
     )
