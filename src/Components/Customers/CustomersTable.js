@@ -7,7 +7,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid2'
+import Stack from '@mui/material/Stack';
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
+import EditIcon from '@mui/icons-material/Edit';
+import { Link } from "react-router-dom"
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -29,43 +33,40 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0),
-  createData('Ice cream sandwich', 237, 9.0),
-  createData('Eclair', 262, 16.0),
-  createData('Cupcake', 305, 3.7),
-  createData('Gingerbread', 356, 16.0),
-];
-
-export default function CustomersTable() {
+export default function CustomersTable(props) {
   return (
-    <TableContainer component={Paper} sx={{marginTop:3}} >
+    <TableContainer component={Paper} sx={{ marginTop: 3 }} >
       <Table tableLayout="fixed">
         <TableHead>
           <TableRow>
             <StyledTableCell>Nombre</StyledTableCell>
             <StyledTableCell>Identificación</StyledTableCell>
             <StyledTableCell >Acciones</StyledTableCell>
-            </TableRow>
+          </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
-              <StyledTableCell component="th" scope="row">
-                {row.name}
+          {props.customers.map((customer) => (
+            <StyledTableRow key={customer.id}>
+              <StyledTableCell>{customer.nombre} {customer.apellidos}</StyledTableCell>
+              <StyledTableCell >{customer.identificacion}</StyledTableCell>
+              <StyledTableCell >
+                <Stack direction="row" spacing={1}>
+                  <IconButton aria-label="delete">
+                  <Link to={`/customer-maintenance/${customer.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <EditIcon />
+                    </Link>
+                  </IconButton>
+                  <IconButton aria-label="edit">
+                    <DeleteIcon />
+                  </IconButton>
+                </Stack>
               </StyledTableCell>
-              <StyledTableCell >{row.calories}</StyledTableCell>
-              <StyledTableCell >{row.fat}</StyledTableCell>
-             
             </StyledTableRow>
           ))}
         </TableBody>
       </Table>
     </TableContainer>
-   
+
   );
 }

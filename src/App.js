@@ -10,7 +10,7 @@ import Grid from '@mui/material/Grid2'
 import { Box } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './utils/colors';
-import Container from '@mui/material/Container';
+import Page404 from './Components/Page404/Page404';
 
 function App() {
 
@@ -30,28 +30,13 @@ function App() {
                     <Home />
                   </Grid>
                   <Grid item size={{ xs: 12, md: 9, lg: 9 }} sx={{ marginTop: 8 }} >
-                  <Container fixed
-                      sx={{
-                        bgcolor: 'white',
-                        borderRadius: '8px',
-                        boxShadow: 3,
-                        p: 3,
-                        marginTop: 3,
-                        width: {
-                          xs: '350px',
-                          sm: '360px',
-                          md: '850px',
-                          lg: '1000px',
-                          xl: '1000px'
-                        },
-                        mx: 'auto'
-                      }}
-                    >
+                  
                       <Routes>
                         <Route path="/" element={<Welcome />} />
                         <Route path="/customers" element={<Customers />} />
+                        <Route path="/error404" element={<Page404 />} />
                       </Routes>
-                    </Container>
+                    
                   </Grid>
                 </Grid>
               </ThemeProvider>
