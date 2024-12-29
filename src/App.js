@@ -7,10 +7,10 @@ import Home from './Components/Home/Home';
 import Customers from './Components/Customers/Customers';
 import Welcome from './Components/Welcome/Welcome';
 import Grid from '@mui/material/Grid2'
-import { Box } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './utils/colors';
 import Page404 from './Components/Page404/Page404';
+import CustomersMaintenance from './Components/Customers/CustomersMaintenance';
 
 function App() {
 
@@ -34,6 +34,7 @@ function App() {
                       <Routes>
                         <Route path="/" element={<Welcome />} />
                         <Route path="/customers" element={<Customers />} />
+                        <Route path="/customer-maintenance/:custId?" element={<CustomersMaintenance />} />
                         <Route path="/error404" element={<Page404 />} />
                       </Routes>
                     
