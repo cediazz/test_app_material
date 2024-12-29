@@ -14,9 +14,9 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import postData from '../../utils/postData';
 import Container from '@mui/material/Container';
-import PersonIcon from '@mui/icons-material/Person'
 import SaveIcon from '@mui/icons-material/Save';
 import AccountCircleSharpIcon from '@mui/icons-material/AccountCircleSharp';
+import CustomersMaintenanceForm from './CustomersMaintenanceForm';
 
 const CustomersMaintenance = () => {
 
@@ -91,7 +91,7 @@ const CustomersMaintenance = () => {
                     </form>
                 </Grid>
             </Grid>
-
+            <CustomersMaintenanceForm />
 
         </Container>
     )
