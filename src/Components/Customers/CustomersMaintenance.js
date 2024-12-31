@@ -8,7 +8,7 @@ import Grid from '@mui/material/Grid2'
 import Stack from '@mui/material/Stack';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Link } from "react-router-dom"
-import { useState, useEffect } from 'react';
+import { useState, useEffect, } from 'react';
 import { useNavigate } from "react-router-dom";
 import postData from '../../utils/postData';
 import Container from '@mui/material/Container';
@@ -17,13 +17,18 @@ import CustomersMaintenanceForm from './CustomersMaintenanceForm';
 import * as Yup from 'yup';
 import { useFormik } from 'formik'
 import ImageCustomersField from '../ImageCustomersField/ImageCustomersField';
+import { useParams } from 'react-router-dom';
+import getData from '../../utils/getData';
+import formatDateToInput from '../../utils/formatDate';
 
 const CustomersMaintenance = () => {
 
     const navigate = useNavigate()
+    const { custId } = useParams();
     const accessToken = localStorage.getItem('access')
     const userId = localStorage.getItem('user_id')
-    const url = 'https://pruebareactjs.test-class.com/Api/api/Cliente/Crear'
+    const createCustomerurl = 'https://pruebareactjs.test-class.com/Api/api/Cliente/Crear'
+    const getCustomerurl = `https://pruebareactjs.test-class.com/Api/api/Cliente/Obtener/${custId}`
     const [snackbarState, setSnackbarState] = useState({
         open: false,
         vertical: 'top',
@@ -32,6 +37,15 @@ const CustomersMaintenance = () => {
     const { vertical, horizontal, open } = snackbarState
     const [snackbarMessage, setSnackbarMessage] = useState('')
     const [snackbarSeverity, setSnackbarSeverity] = useState('success')
+
+    useEffect(() => {
+        if (!localStorage.getItem('username'))
+            navigate("/login")
+        else{
+            if(custId)
+            getcustomer()
+        }
+    }, [])
 
     const validationSchema = Yup.object().shape({
         identificacion: Yup.string().required('La identificación es obligatoria'),
@@ -64,7 +78,41 @@ const CustomersMaintenance = () => {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => addcustomer(values)
-    });
+    })
+
+    const getcustomer = async () => {
+
+        try {
+
+            let res = await getData(getCustomerurl,accessToken)
+            console.log(res)
+            if (res.status === 200) {
+                const data = res.data
+                formik.setFieldValue('identificacion', data.identificacion);
+                formik.setFieldValue('nombre', data.nombre);
+                formik.setFieldValue('apellidos', data.apellidos);
+                formik.setFieldValue('sexo', data.sexo);
+                formik.setFieldValue('fNacimiento', formatDateToInput(data.fNacimiento));
+                formik.setFieldValue('fAfiliacion', formatDateToInput(data.fAfiliacion));
+                formik.setFieldValue('celular', data.telefonoCelular);
+                formik.setFieldValue('otroTelefono', data.otroTelefono);
+                formik.setFieldValue('direccion', data.direccion);
+                formik.setFieldValue('resennaPersonal', data.resenaPersonal);
+                formik.setFieldValue('interesFK', data.interesesId);
+                formik.setFieldValue('imagen', data.imagen);
+            }
+
+
+        }
+        catch (error) {
+            if (error.status == 401)
+                navigate('/login')
+            else
+                navigate('/error404')
+
+        }
+
+    }
 
 
     const addcustomer = async (values) => {
@@ -72,7 +120,7 @@ const CustomersMaintenance = () => {
         values['usuarioId'] = userId
         try {
 
-            let res = await postData(url, values, accessToken)
+            let res = await postData(createCustomerurl, values, accessToken)
             if (res.status === 200) {
                 setSnackbarMessage("Cliente agregado")
                 setSnackbarSeverity('success');
@@ -91,10 +139,7 @@ const CustomersMaintenance = () => {
 
     }
 
-    useEffect(() => {
-        if (!localStorage.getItem('username'))
-            navigate("/login")
-    }, [])
+    
 
     return (
         <Container fixed
@@ -125,7 +170,7 @@ const CustomersMaintenance = () => {
 
                         <Stack spacing={1} direction="row">
                             <Button variant="outlined" color='appbar' type='submit'><SaveIcon /> Guardar</Button>
-                            <Link to="/" >
+                            <Link to="/customers" >
                                 <Button variant="outlined" color='appbar'><ArrowBackIcon /> Regresar</Button>
                             </Link>
                         </Stack>

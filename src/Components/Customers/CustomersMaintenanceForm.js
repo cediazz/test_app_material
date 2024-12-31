@@ -76,8 +76,8 @@ function CustomersMaintenanceForm(props) {
 
                     >
                         <MenuItem value={'Seleccione'} disabled={true}>Seleccione</MenuItem>
-                        <MenuItem value={'f'}>Femenino</MenuItem>
-                        <MenuItem value={'m'}>Masculino</MenuItem>
+                        <MenuItem value={'F'}>Femenino</MenuItem>
+                        <MenuItem value={'M'}>Masculino</MenuItem>
                     </Select>
                     <FormHelperText sx={{ color: '#D32F2F' }}>
                         {props.formik.touched.sexo && props.formik.errors.sexo}
