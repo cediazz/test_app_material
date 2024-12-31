@@ -1,13 +1,14 @@
 import {
     Button,
     Typography,
-
+    Snackbar,
+    Alert
 } from '@mui/material'
 import Grid from '@mui/material/Grid2'
 import Stack from '@mui/material/Stack';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Link } from "react-router-dom"
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import postData from '../../utils/postData';
 import Container from '@mui/material/Container';
@@ -21,7 +22,16 @@ const CustomersMaintenance = () => {
 
     const navigate = useNavigate()
     const accessToken = localStorage.getItem('access')
-    const url = 'https://pruebareactjs.test-class.com/Api/api/Cliente/Listado'
+    const userId = localStorage.getItem('user_id')
+    const url = 'https://pruebareactjs.test-class.com/Api/api/Cliente/Crear'
+    const [snackbarState, setSnackbarState] = useState({
+        open: false,
+        vertical: 'top',
+        horizontal: 'center',
+    })
+    const { vertical, horizontal, open } = snackbarState
+    const [snackbarMessage, setSnackbarMessage] = useState('')
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success')
 
     const validationSchema = Yup.object().shape({
         identificacion: Yup.string().required('La identificación es obligatoria'),
@@ -30,39 +40,44 @@ const CustomersMaintenance = () => {
         sexo: Yup.string().notOneOf(['Seleccione'], 'Por favor, seleccione un género'),
         fNacimiento: Yup.date().required('La fecha de nacimiento es obligatoria'),
         fAfiliacion: Yup.date().required('La fecha de afiliación es obligatoria'),
-        telefonoCelular: Yup.string().required('El teléfono celular es obligatorio'),
+        celular: Yup.string().required('El teléfono celular es obligatorio'),
         otroTelefono: Yup.string().required('El teléfono es obligatorio'),
         direccion: Yup.string().required('La dirección es obligatoria'),
-        resenaPersonal: Yup.string().required('La reseña es obligatoria'),
+        resennaPersonal: Yup.string().required('La reseña es obligatoria'),
         interesFK: Yup.string().notOneOf(['Seleccione'], 'Por favor, seleccione un interés')
-      });
-    
-      const formik = useFormik({
+    });
+
+    const formik = useFormik({
         initialValues: {
-          identificacion: '',
-          nombre: '',
-          apellidos: '',
-          sexo: 'Seleccione',
-          fNacimiento: null,
-          fAfiliacion: null,
-          telefonoCelular: '',
-          otroTelefono: '',
-          direccion: '',
-          resenaPersonal: '',
-          interesFK : 'Seleccione'
+            identificacion: '',
+            nombre: '',
+            apellidos: '',
+            sexo: 'Seleccione',
+            fNacimiento: null,
+            fAfiliacion: null,
+            celular: '',
+            otroTelefono: '',
+            direccion: '',
+            resennaPersonal: '',
+            interesFK: 'Seleccione'
         },
         validationSchema: validationSchema,
         onSubmit: (values) => addcustomer(values)
-      });
+    });
 
 
     const addcustomer = async (values) => {
 
-        console.log(values)
-        /*try {
+        values['usuarioId'] = userId
+        values['imagen'] = ''
+        try {
 
             let res = await postData(url, values, accessToken)
-            console.log(res)
+            if (res.status === 200) {
+                setSnackbarMessage("Cliente agregado")
+                setSnackbarSeverity('success');
+                setSnackbarState(prev => ({ ...prev, open: true }))
+            }
 
 
         }
@@ -72,7 +87,7 @@ const CustomersMaintenance = () => {
             else
                 navigate('/error404')
 
-        }*/
+        }
 
     }
 
@@ -125,8 +140,12 @@ const CustomersMaintenance = () => {
                     </Grid>
                 </Grid>
                 <CustomersMaintenanceForm formik={formik} />
-                
             </form>
+            <Snackbar anchorOrigin={{ vertical, horizontal }} open={open} autoHideDuration={4000}  >
+                    <Alert sx={{ width: '100%' }} severity={snackbarSeverity}>
+                        {snackbarMessage}
+                    </Alert>
+                </Snackbar>
         </Container>
     )
 }

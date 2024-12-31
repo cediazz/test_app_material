@@ -76,8 +76,8 @@ function CustomersMaintenanceForm(props) {
 
                     >
                         <MenuItem value={'Seleccione'} disabled={true}>Seleccione</MenuItem>
-                        <MenuItem value={'F'}>Femenino</MenuItem>
-                        <MenuItem value={'M'}>Masculino</MenuItem>
+                        <MenuItem value={'f'}>Femenino</MenuItem>
+                        <MenuItem value={'m'}>Masculino</MenuItem>
                     </Select>
                     <FormHelperText sx={{ color: '#D32F2F' }}>
                         {props.formik.touched.sexo && props.formik.errors.sexo}
@@ -121,13 +121,13 @@ function CustomersMaintenanceForm(props) {
                 <TextField
                     fullWidth
                     label="Teléfono celular*"
-                    name='telefonoCelular'
+                    name='celular'
                     variant="outlined"
-                    value={props.formik.values.telefonoCelular}
+                    value={props.formik.values.celular}
                     onChange={props.formik.handleChange}
                     onBlur={props.formik.handleBlur}
-                    error={props.formik.touched.telefonoCelular && Boolean(props.formik.errors.telefonoCelular)}
-                    helperText={props.formik.touched.telefonoCelular && props.formik.errors.telefonoCelular}
+                    error={props.formik.touched.celular && Boolean(props.formik.errors.celular)}
+                    helperText={props.formik.touched.celular && props.formik.errors.celular}
                 />
             </Grid>
             <Grid item size={{ xs: 12, md: 4, lg: 4 }} >
@@ -164,13 +164,13 @@ function CustomersMaintenanceForm(props) {
                 <TextField
                     fullWidth
                     label="Reseña"
-                    name='resenaPersonal'
+                    name='resennaPersonal'
                     variant="outlined"
-                    value={props.formik.values.resenaPersonal}
+                    value={props.formik.values.resennaPersonal}
                     onChange={props.formik.handleChange}
                     onBlur={props.formik.handleBlur}
-                    error={props.formik.touched.resenaPersonal && Boolean(props.formik.errors.resenaPersonal)}
-                    helperText={props.formik.touched.resenaPersonal && props.formik.errors.resenaPersonal}
+                    error={props.formik.touched.resennaPersonal && Boolean(props.formik.errors.resennaPersonal)}
+                    helperText={props.formik.touched.resennaPersonal && props.formik.errors.resennaPersonal}
 
                 />
             </Grid>
