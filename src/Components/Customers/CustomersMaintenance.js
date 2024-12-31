@@ -1,8 +1,8 @@
 import {
     Button,
-    Typography,
     Snackbar,
-    Alert
+    Alert,
+   
 } from '@mui/material'
 import Grid from '@mui/material/Grid2'
 import Stack from '@mui/material/Stack';
@@ -13,10 +13,10 @@ import { useNavigate } from "react-router-dom";
 import postData from '../../utils/postData';
 import Container from '@mui/material/Container';
 import SaveIcon from '@mui/icons-material/Save';
-import AccountCircleSharpIcon from '@mui/icons-material/AccountCircleSharp';
 import CustomersMaintenanceForm from './CustomersMaintenanceForm';
 import * as Yup from 'yup';
 import { useFormik } from 'formik'
+import ImageCustomersField from '../ImageCustomersField/ImageCustomersField';
 
 const CustomersMaintenance = () => {
 
@@ -59,7 +59,8 @@ const CustomersMaintenance = () => {
             otroTelefono: '',
             direccion: '',
             resennaPersonal: '',
-            interesFK: 'Seleccione'
+            interesFK: 'Seleccione',
+            imagen: ''
         },
         validationSchema: validationSchema,
         onSubmit: (values) => addcustomer(values)
@@ -69,7 +70,6 @@ const CustomersMaintenance = () => {
     const addcustomer = async (values) => {
 
         values['usuarioId'] = userId
-        values['imagen'] = ''
         try {
 
             let res = await postData(url, values, accessToken)
@@ -119,14 +119,7 @@ const CustomersMaintenance = () => {
                 <Grid container spacing={1} >
 
                     <Grid size={{ xs: 12, md: 8, lg: 8 }} >
-                        <Typography variant="h6" color='appbar' sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-
-                        }}>
-                            <AccountCircleSharpIcon sx={{ width: 50, height: 50 }} />
-                            Mantenimiento de clientes
-                        </Typography>
+                    <ImageCustomersField formik={formik}/>
                     </Grid>
                     <Grid size={{ xs: 12, md: 4, lg: 4 }} >
 
@@ -142,10 +135,10 @@ const CustomersMaintenance = () => {
                 <CustomersMaintenanceForm formik={formik} />
             </form>
             <Snackbar anchorOrigin={{ vertical, horizontal }} open={open} autoHideDuration={4000}  >
-                    <Alert sx={{ width: '100%' }} severity={snackbarSeverity}>
-                        {snackbarMessage}
-                    </Alert>
-                </Snackbar>
+                <Alert sx={{ width: '100%' }} severity={snackbarSeverity}>
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
         </Container>
     )
 }
