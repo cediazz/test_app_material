@@ -24,10 +24,11 @@ import formatDateToInput from '../../utils/formatDate';
 const CustomersMaintenance = () => {
 
     const navigate = useNavigate()
-    const { custId } = useParams();
+    const { custId } = useParams()
     const accessToken = localStorage.getItem('access')
     const userId = localStorage.getItem('user_id')
     const createCustomerurl = 'https://pruebareactjs.test-class.com/Api/api/Cliente/Crear'
+    const updateCustomerurl = 'https://pruebareactjs.test-class.com/Api/api/Cliente/Actualizar'
     const getCustomerurl = `https://pruebareactjs.test-class.com/Api/api/Cliente/Obtener/${custId}`
     const [snackbarState, setSnackbarState] = useState({
         open: false,
@@ -77,7 +78,7 @@ const CustomersMaintenance = () => {
             imagen: ''
         },
         validationSchema: validationSchema,
-        onSubmit: (values) => addcustomer(values)
+        onSubmit: custId ? (values) => updatecustomer(values) : (values) => addcustomer(values)
     })
 
     const getcustomer = async () => {
@@ -118,11 +119,38 @@ const CustomersMaintenance = () => {
     const addcustomer = async (values) => {
 
         values['usuarioId'] = userId
+        
         try {
 
             let res = await postData(createCustomerurl, values, accessToken)
             if (res.status === 200) {
                 setSnackbarMessage("Cliente agregado")
+                setSnackbarSeverity('success');
+                setSnackbarState(prev => ({ ...prev, open: true }))
+            }
+
+
+        }
+        catch (error) {
+            if (error.status == 401)
+                navigate('/login')
+            else
+                navigate('/error404')
+
+        }
+
+    }
+
+    const updatecustomer = async (values) => {
+
+        values['usuarioId'] = userId
+        values['id'] = custId
+        try {
+
+            let res = await postData(updateCustomerurl, values, accessToken)
+            console.log(res)
+            if (res.status === 200) {
+                setSnackbarMessage("Cliente actualizado")
                 setSnackbarSeverity('success');
                 setSnackbarState(prev => ({ ...prev, open: true }))
             }
