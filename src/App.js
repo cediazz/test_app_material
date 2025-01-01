@@ -11,11 +11,12 @@ import { ThemeProvider } from '@mui/material/styles';
 import theme from './utils/colors';
 import Page404 from './Components/Page404/Page404';
 import CustomersMaintenance from './Components/Customers/CustomersMaintenance';
+import { NotificationProvider } from './utils/notificationContext';
 
 function App() {
 
   return (
-    <UserProvider>
+    <NotificationProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
@@ -46,7 +47,7 @@ function App() {
           />
         </Routes>
       </BrowserRouter>
-    </UserProvider>
+    </NotificationProvider>
   );
 }
 

@@ -11,16 +11,25 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import { useNavigate } from "react-router-dom"
 import DeleteData from '../../utils/deleteData';
+import { useContext } from 'react';
+import { NotificationContext } from '../../utils/notificationContext';
 
 export default function DeleteCustomer(props) {
-    
+
     const [open, setOpen] = React.useState(false);
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     const navigate = useNavigate()
     const accessToken = localStorage.getItem('access')
     const deleteUrl = `https://pruebareactjs.test-class.com/Api/api/Cliente/Eliminar/${props.customer.id}`
-    
+    const { 
+        snackbarMessage,
+        setSnackbarMessage,
+        snackbarSeverity,
+        setSnackbarSeverity,
+        setSnackbarState
+        } = useContext(NotificationContext)
+
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -32,21 +41,23 @@ export default function DeleteCustomer(props) {
     const handleDelete = async () => {
         try {
 
-            let res = await DeleteData(deleteUrl,accessToken)
+            let res = await DeleteData(deleteUrl, accessToken)
             console.log(res)
             if (res.status === 200) {
-               //confirmar eliminación del usuario
+                //confirmar eliminación del usuario
             }
 
 
         }
         catch (error) {
-            
-
+            setSnackbarMessage('Ocurrió algun error en la operación')
+            setSnackbarSeverity('error')
+            setSnackbarState(prev => ({ ...prev, open: true }))
+            setOpen(false)
         }
 
     }
-    
+
 
     return (
         <React.Fragment>
