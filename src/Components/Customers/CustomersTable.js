@@ -8,7 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteCustomer from '../DeleteCustomer/DeleteCustomer';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import { Link } from "react-router-dom"
@@ -52,14 +52,12 @@ export default function CustomersTable(props) {
               <StyledTableCell >{customer.identificacion}</StyledTableCell>
               <StyledTableCell >
                 <Stack direction="row" spacing={1}>
-                  <IconButton aria-label="delete">
+                  <IconButton aria-label="edit">
                   <Link to={`/customer-maintenance/${customer.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                     <EditIcon />
                     </Link>
                   </IconButton>
-                  <IconButton aria-label="edit">
-                    <DeleteIcon />
-                  </IconButton>
+                  <DeleteCustomer customer={customer}/>
                 </Stack>
               </StyledTableCell>
             </StyledTableRow>
