@@ -33,9 +33,13 @@ export default function ImageCustomersField(props){
             />
             <label htmlFor="avatar-upload">
                 <IconButton aria-label="upload picture" component="span">
+                    {
+                    props.formik.values.imagen ?
+                    <Avatar src={props.formik.values.imagen} sx={{ width: 50, height: 50 }}/>
+                    :
                     <Avatar>
                         <AccountCircleSharpIcon color='appbar' sx={{ width: 50, height: 50 }}/>
-                    </Avatar>
+                    </Avatar>}
                 </IconButton>
             </label>
             Mantenimiento de clientes

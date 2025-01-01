@@ -30,14 +30,7 @@ const CustomersMaintenance = () => {
     const createCustomerurl = 'https://pruebareactjs.test-class.com/Api/api/Cliente/Crear'
     const updateCustomerurl = 'https://pruebareactjs.test-class.com/Api/api/Cliente/Actualizar'
     const getCustomerurl = `https://pruebareactjs.test-class.com/Api/api/Cliente/Obtener/${custId}`
-    const [snackbarState, setSnackbarState] = useState({
-        open: false,
-        vertical: 'top',
-        horizontal: 'center',
-    })
-    const { vertical, horizontal, open } = snackbarState
-    const [snackbarMessage, setSnackbarMessage] = useState('')
-    const [snackbarSeverity, setSnackbarSeverity] = useState('success')
+    
 
     useEffect(() => {
         if (!localStorage.getItem('username'))
@@ -124,9 +117,7 @@ const CustomersMaintenance = () => {
 
             let res = await postData(createCustomerurl, values, accessToken)
             if (res.status === 200) {
-                setSnackbarMessage("Cliente agregado")
-                setSnackbarSeverity('success');
-                setSnackbarState(prev => ({ ...prev, open: true }))
+                navigate('/customers')
             }
 
 
@@ -150,9 +141,7 @@ const CustomersMaintenance = () => {
             let res = await postData(updateCustomerurl, values, accessToken)
             console.log(res)
             if (res.status === 200) {
-                setSnackbarMessage("Cliente actualizado")
-                setSnackbarSeverity('success');
-                setSnackbarState(prev => ({ ...prev, open: true }))
+                navigate('/customers')
             }
 
 
@@ -207,11 +196,6 @@ const CustomersMaintenance = () => {
                 </Grid>
                 <CustomersMaintenanceForm formik={formik} />
             </form>
-            <Snackbar anchorOrigin={{ vertical, horizontal }} open={open} autoHideDuration={4000}  >
-                <Alert sx={{ width: '100%' }} severity={snackbarSeverity}>
-                    {snackbarMessage}
-                </Alert>
-            </Snackbar>
         </Container>
     )
 }
