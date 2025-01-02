@@ -1,16 +1,16 @@
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
-import DeleteCustomer from '../DeleteCustomer/DeleteCustomer';
-import IconButton from '@mui/material/IconButton';
-import EditIcon from '@mui/icons-material/Edit';
+import * as React from 'react'
+import { styled } from '@mui/material/styles'
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
+import TableCell, { tableCellClasses } from '@mui/material/TableCell'
+import TableContainer from '@mui/material/TableContainer'
+import TableHead from '@mui/material/TableHead'
+import TableRow from '@mui/material/TableRow'
+import Paper from '@mui/material/Paper'
+import Stack from '@mui/material/Stack'
+import DeleteCustomer from '../DeleteCustomer/DeleteCustomer'
+import IconButton from '@mui/material/IconButton'
+import EditIcon from '@mui/icons-material/Edit'
 import { Link } from "react-router-dom"
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -53,11 +53,11 @@ export default function CustomersTable(props) {
               <StyledTableCell >
                 <Stack direction="row" spacing={1}>
                   <IconButton aria-label="edit">
-                  <Link to={`/customer-maintenance/${customer.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                    <EditIcon />
+                    <Link to={`/customer-maintenance/${customer.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                      <EditIcon />
                     </Link>
                   </IconButton>
-                  <DeleteCustomer customer={customer}/>
+                  <DeleteCustomer customer={customer} />
                 </Stack>
               </StyledTableCell>
             </StyledTableRow>

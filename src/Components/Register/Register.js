@@ -2,24 +2,24 @@ import {
   Box,
   Button,
   Typography,
-} from '@mui/material';
-import * as Yup from 'yup';
+} from '@mui/material'
+import * as Yup from 'yup'
 import UsernameField from '../UsernameField/UsernameField'
 import PasswordField from '../PasswordField/PasswordField'
 import { useFormik } from 'formik';
-import EmailField from '../EmailField/EmailField';
+import EmailField from '../EmailField/EmailField'
 import axios from 'axios'
 import { Link } from "react-router-dom"
-import { useContext,useState } from 'react';
-import { NotificationContext } from '../../utils/notificationContext';
+import { useContext, useState } from 'react'
+import { NotificationContext } from '../../utils/notificationContext'
 import Loading from '../Loading/Loading'
 
 const Register = () => {
 
 
-  const { setSnackbarMessage,setSnackbarSeverity,setSnackbarState} = useContext(NotificationContext)
+  const { setSnackbarMessage, setSnackbarSeverity, setSnackbarState } = useContext(NotificationContext)
   const [loading, setLoading] = useState(false)
-  
+
   const validationSchema = Yup.object().shape({
     username: Yup.string().required('Se requiere nombre de usuario'),
     password: Yup.string()
@@ -43,7 +43,6 @@ const Register = () => {
     setLoading(true)
     try {
       let res = await axios.post('https://pruebareactjs.test-class.com/Api/api/Authenticate/register', values)
-      console.log(res)
       if (res.status === 200) {
         setSnackbarMessage(res.data.message)
         setSnackbarSeverity('success');
@@ -72,36 +71,36 @@ const Register = () => {
       }}
     >
       {loading ? <Loading /> :
-      <>
-      <Typography variant="h4" gutterBottom>
-        Registro
-      </Typography>
-      <form onSubmit={formik.handleSubmit}>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            width: '300px',
-            bgcolor: 'white',
-            borderRadius: '8px',
-            boxShadow: 3,
-            p: 3,
-          }}
-        >
-          <UsernameField formik={formik} />
-          <PasswordField formik={formik} />
-          <EmailField formik={formik} />
-          <Button variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
-            Registrarme
-          </Button>
-          <Typography variant="body2" sx={{ mt: 2 }}>
+        <>
+          <Typography variant="h4" gutterBottom>
+            Registro
+          </Typography>
+          <form onSubmit={formik.handleSubmit}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                width: '300px',
+                bgcolor: 'white',
+                borderRadius: '8px',
+                boxShadow: 3,
+                p: 3,
+              }}
+            >
+              <UsernameField formik={formik} />
+              <PasswordField formik={formik} />
+              <EmailField formik={formik} />
+              <Button variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
+                Registrarme
+              </Button>
+              <Typography variant="body2" sx={{ mt: 2 }}>
                 <Link to="/login">
                   ¿Ya tiene una cuenta? autentíquese aquí
                 </Link>
               </Typography>
-        </Box>
-      </form>
-      </>
+            </Box>
+          </form>
+        </>
       }
     </Box>
 

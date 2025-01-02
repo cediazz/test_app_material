@@ -2,21 +2,21 @@ import { useState, useEffect } from 'react';
 import {
     Box,
     CssBaseline,
-} from '@mui/material';
+} from '@mui/material'
 import MyAppBar from './AppBar'
-import Sidebar from './Sidebar';
+import Sidebar from './Sidebar'
 import { useNavigate } from "react-router-dom"
 
 const Home = () => {
 
-    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [drawerOpen, setDrawerOpen] = useState(false)
 
     const toggleDrawer = (open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-            return;
+            return
         }
-        setDrawerOpen(open);
-    };
+        setDrawerOpen(open)
+    }
     const userName = localStorage.getItem('username')
     const navigate = useNavigate()
 
@@ -36,4 +36,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default Home

@@ -1,22 +1,22 @@
-import {Button} from '@mui/material'
+import { Button } from '@mui/material'
 import Grid from '@mui/material/Grid2'
-import Stack from '@mui/material/Stack';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import Stack from '@mui/material/Stack'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { Link } from "react-router-dom"
-import { useEffect,useState } from 'react';
-import { useNavigate } from "react-router-dom";
-import postData from '../../utils/postData';
-import Container from '@mui/material/Container';
-import SaveIcon from '@mui/icons-material/Save';
-import CustomersMaintenanceForm from './CustomersMaintenanceForm';
+import { useEffect, useState } from 'react'
+import { useNavigate } from "react-router-dom"
+import postData from '../../utils/postData'
+import Container from '@mui/material/Container'
+import SaveIcon from '@mui/icons-material/Save'
+import CustomersMaintenanceForm from './CustomersMaintenanceForm'
 import * as Yup from 'yup';
 import { useFormik } from 'formik'
-import ImageCustomersField from '../ImageCustomersField/ImageCustomersField';
-import { useParams } from 'react-router-dom';
-import getData from '../../utils/getData';
-import formatDateToInput from '../../utils/formatDate';
-import { useContext } from 'react';
-import { NotificationContext } from '../../utils/notificationContext';
+import ImageCustomersField from '../ImageCustomersField/ImageCustomersField'
+import { useParams } from 'react-router-dom'
+import getData from '../../utils/getData'
+import formatDateToInput from '../../utils/formatDate'
+import { useContext } from 'react'
+import { NotificationContext } from '../../utils/notificationContext'
 import Loading from '../Loading/Loading'
 
 const CustomersMaintenance = () => {
@@ -28,15 +28,15 @@ const CustomersMaintenance = () => {
     const createCustomerurl = 'https://pruebareactjs.test-class.com/Api/api/Cliente/Crear'
     const updateCustomerurl = 'https://pruebareactjs.test-class.com/Api/api/Cliente/Actualizar'
     const getCustomerurl = `https://pruebareactjs.test-class.com/Api/api/Cliente/Obtener/${custId}`
-    const { setSnackbarMessage,setSnackbarSeverity,setSnackbarState} = useContext(NotificationContext)
+    const { setSnackbarMessage, setSnackbarSeverity, setSnackbarState } = useContext(NotificationContext)
     const [loading, setLoading] = useState(false)
-    
+
     useEffect(() => {
         if (!localStorage.getItem('username'))
             navigate("/login")
-        else{
-            if(custId)
-            getcustomer()
+        else {
+            if (custId)
+                getcustomer()
         }
     }, [])
 
@@ -76,23 +76,21 @@ const CustomersMaintenance = () => {
     const getcustomer = async () => {
         setLoading(true)
         try {
-
-            let res = await getData(getCustomerurl,accessToken)
-            console.log(res)
+            let res = await getData(getCustomerurl, accessToken)
             if (res.status === 200) {
                 const data = res.data
-                formik.setFieldValue('identificacion', data.identificacion);
-                formik.setFieldValue('nombre', data.nombre);
-                formik.setFieldValue('apellidos', data.apellidos);
-                formik.setFieldValue('sexo', data.sexo);
-                formik.setFieldValue('fNacimiento', formatDateToInput(data.fNacimiento));
-                formik.setFieldValue('fAfiliacion', formatDateToInput(data.fAfiliacion));
-                formik.setFieldValue('celular', data.telefonoCelular);
-                formik.setFieldValue('otroTelefono', data.otroTelefono);
-                formik.setFieldValue('direccion', data.direccion);
-                formik.setFieldValue('resennaPersonal', data.resenaPersonal);
-                formik.setFieldValue('interesFK', data.interesesId);
-                formik.setFieldValue('imagen', data.imagen);
+                formik.setFieldValue('identificacion', data.identificacion)
+                formik.setFieldValue('nombre', data.nombre)
+                formik.setFieldValue('apellidos', data.apellidos)
+                formik.setFieldValue('sexo', data.sexo)
+                formik.setFieldValue('fNacimiento', formatDateToInput(data.fNacimiento))
+                formik.setFieldValue('fAfiliacion', formatDateToInput(data.fAfiliacion))
+                formik.setFieldValue('celular', data.telefonoCelular)
+                formik.setFieldValue('otroTelefono', data.otroTelefono)
+                formik.setFieldValue('direccion', data.direccion)
+                formik.setFieldValue('resennaPersonal', data.resenaPersonal)
+                formik.setFieldValue('interesFK', data.interesesId)
+                formik.setFieldValue('imagen', data.imagen)
                 setLoading(false)
             }
 
@@ -168,48 +166,48 @@ const CustomersMaintenance = () => {
 
     }
 
-    
+
 
     return (
         loading ? <Loading /> :
-        <Container fixed
+            <Container fixed
 
-            sx={{
-                bgcolor: 'white',
-                borderRadius: '8px',
-                boxShadow: 3,
-                p: 3,
-                marginTop: 3,
-                width: {
-                    xs: '350px',
-                    sm: '360px',
-                    md: '850px',
-                    lg: '1000px',
-                    xl: '1000px'
-                },
-                mx: 'auto'
-            }}
-        >
-            <form onSubmit={formik.handleSubmit}>
-                <Grid container spacing={1} >
+                sx={{
+                    bgcolor: 'white',
+                    borderRadius: '8px',
+                    boxShadow: 3,
+                    p: 3,
+                    marginTop: 3,
+                    width: {
+                        xs: '350px',
+                        sm: '360px',
+                        md: '850px',
+                        lg: '1000px',
+                        xl: '1000px'
+                    },
+                    mx: 'auto'
+                }}
+            >
+                <form onSubmit={formik.handleSubmit}>
+                    <Grid container spacing={1} >
 
-                    <Grid size={{ xs: 12, md: 8, lg: 8 }} >
-                    <ImageCustomersField formik={formik}/>
+                        <Grid size={{ xs: 12, md: 8, lg: 8 }} >
+                            <ImageCustomersField formik={formik} />
+                        </Grid>
+                        <Grid size={{ xs: 12, md: 4, lg: 4 }} >
+
+                            <Stack spacing={1} direction="row">
+                                <Button variant="outlined" color='appbar' type='submit'><SaveIcon /> Guardar</Button>
+                                <Link to="/customers" >
+                                    <Button variant="outlined" color='appbar'><ArrowBackIcon /> Regresar</Button>
+                                </Link>
+                            </Stack>
+
+                        </Grid>
                     </Grid>
-                    <Grid size={{ xs: 12, md: 4, lg: 4 }} >
-
-                        <Stack spacing={1} direction="row">
-                            <Button variant="outlined" color='appbar' type='submit'><SaveIcon /> Guardar</Button>
-                            <Link to="/customers" >
-                                <Button variant="outlined" color='appbar'><ArrowBackIcon /> Regresar</Button>
-                            </Link>
-                        </Stack>
-
-                    </Grid>
-                </Grid>
-                <CustomersMaintenanceForm formik={formik} />
-            </form>
-        </Container>
+                    <CustomersMaintenanceForm formik={formik} />
+                </form>
+            </Container>
     )
 }
 export default CustomersMaintenance

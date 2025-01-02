@@ -4,16 +4,16 @@ import {
 
 } from '@mui/material'
 import Grid from '@mui/material/Grid2'
-import Stack from '@mui/material/Stack';
+import Stack from '@mui/material/Stack'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from '@mui/icons-material/Add'
 import { Link } from "react-router-dom"
-import CustomersSearch from './CustomersSearch';
+import CustomersSearch from './CustomersSearch'
 import CustomersTable from './CustomersTable'
-import { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
-import postData from '../../utils/postData';
-import Container from '@mui/material/Container';
+import { useState, useEffect } from 'react'
+import { useNavigate } from "react-router-dom"
+import postData from '../../utils/postData'
+import Container from '@mui/material/Container'
 import Loading from '../Loading/Loading'
 
 const Customers = () => {
@@ -33,9 +33,7 @@ const Customers = () => {
     const getcustomers = async () => {
         setLoading(true)
         try {
-
             let res = await postData(url, formData, accessToken)
-            console.log(res)
             if (res.status == 200)
                 setCustomers(res.data)
             setLoading(false)
@@ -45,7 +43,7 @@ const Customers = () => {
             if (error.status == 401)
                 navigate('/login')
             else
-            navigate('/error404')
+                navigate('/error404')
 
         }
 
@@ -63,46 +61,46 @@ const Customers = () => {
 
     return (
         loading ? <Loading /> :
-        <Container fixed
-            sx={{
-                bgcolor: 'white',
-                borderRadius: '8px',
-                boxShadow: 3,
-                p: 3,
-                marginTop: 3,
-                width: {
-                    xs: '350px',
-                    sm: '360px',
-                    md: '850px',
-                    lg: '1000px',
-                    xl: '1000px'
-                },
-                mx: 'auto'
-            }}
-        >
-            <Grid container >
-                <Grid size={{ xs: 12, md: 8, lg: 8 }} >
-                    <Typography variant="h6" color='appbar'>
-                        Consulta de CLientes
-                    </Typography>
+            <Container fixed
+                sx={{
+                    bgcolor: 'white',
+                    borderRadius: '8px',
+                    boxShadow: 3,
+                    p: 3,
+                    marginTop: 3,
+                    width: {
+                        xs: '350px',
+                        sm: '360px',
+                        md: '850px',
+                        lg: '1000px',
+                        xl: '1000px'
+                    },
+                    mx: 'auto'
+                }}
+            >
+                <Grid container >
+                    <Grid size={{ xs: 12, md: 8, lg: 8 }} >
+                        <Typography variant="h6" color='appbar'>
+                            Consulta de CLientes
+                        </Typography>
 
+                    </Grid>
+                    <Grid size={{ xs: 12, md: 4, lg: 4 }} >
+                        <Stack spacing={1} direction="row">
+                            <Link to="/customer-maintenance/" >
+                                <Button variant="outlined" color='appbar'><AddIcon /> Agregar</Button>
+                            </Link>
+                            <Link to="/" >
+                                <Button variant="outlined" color='appbar'><ArrowBackIcon /> Regresar</Button>
+                            </Link>
+                        </Stack>
+                    </Grid>
                 </Grid>
-                <Grid size={{ xs: 12, md: 4, lg: 4 }} >
-                    <Stack spacing={1} direction="row">
-                        <Link to="/customer-maintenance/" >
-                            <Button variant="outlined" color='appbar'><AddIcon /> Agregar</Button>
-                        </Link>
-                        <Link to="/" >
-                            <Button variant="outlined" color='appbar'><ArrowBackIcon /> Regresar</Button>
-                        </Link>
-                    </Stack>
-                </Grid>
-            </Grid>
 
-            <CustomersSearch setFormData={setFormData} />
-            <CustomersTable customers={customers} />
-        </Container>
-        
+                <CustomersSearch setFormData={setFormData} />
+                <CustomersTable customers={customers} />
+            </Container>
+
     )
 }
 export default Customers

@@ -1,11 +1,11 @@
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import { FormHelperText } from '@mui/material';
-import Select from '@mui/material/Select';
-import { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
-import getData from '../../utils/getData';
+import MenuItem from '@mui/material/MenuItem'
+import FormControl from '@mui/material/FormControl'
+import InputLabel from '@mui/material/InputLabel'
+import { FormHelperText } from '@mui/material'
+import Select from '@mui/material/Select'
+import { useState, useEffect } from 'react'
+import { useNavigate } from "react-router-dom"
+import getData from '../../utils/getData'
 
 
 function Interest(props) {
@@ -14,19 +14,19 @@ function Interest(props) {
     const navigate = useNavigate()
     const accessToken = localStorage.getItem('access')
     const url = 'https://pruebareactjs.test-class.com/Api/api/Intereses/Listado'
-    
-    
+
+
     const getinterest = async () => {
-       
+
         try {
 
             let res = await getData(url, accessToken)
             if (res.status == 200)
                 setInterest(res.data)
-                
+
         }
         catch (error) {
-            
+
             if (error.status == 401)
                 navigate('/login')
             else
@@ -42,11 +42,11 @@ function Interest(props) {
 
     return (
         <FormControl fullWidth>
-             {props.formik.touched.interesFK && Boolean(props.formik.errors.interesFK) ?
-                        <InputLabel id="selectInterest">
-                            <div style={{ color: '#D32F2F' }}>Interes*</div>
-                        </InputLabel> :
-                        <InputLabel id="selectInterest">Interes*</InputLabel>
+            {props.formik.touched.interesFK && Boolean(props.formik.errors.interesFK) ?
+                <InputLabel id="selectInterest">
+                    <div style={{ color: '#D32F2F' }}>Interes*</div>
+                </InputLabel> :
+                <InputLabel id="selectInterest">Interes*</InputLabel>
             }
             <Select
                 labelId="selectInterest"
@@ -65,7 +65,7 @@ function Interest(props) {
                 ))}
             </Select>
             <FormHelperText sx={{ color: '#D32F2F' }}>
-                        {props.formik.touched.interesFK && props.formik.errors.interesFK}
+                {props.formik.touched.interesFK && props.formik.errors.interesFK}
             </FormHelperText>
         </FormControl>
     )

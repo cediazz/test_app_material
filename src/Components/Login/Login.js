@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'
 import {
   Box,
   Button,
@@ -10,26 +10,25 @@ import { Link } from "react-router-dom"
 import * as Yup from 'yup';
 import UsernameField from '../UsernameField/UsernameField'
 import PasswordField from '../PasswordField/PasswordField'
-import { useFormik } from 'formik';
-import authenticate from '../../utils/authentication';
+import { useFormik } from 'formik'
+import authenticate from '../../utils/authentication'
 import { useNavigate } from "react-router-dom";
-import { useContext } from 'react';
-import { NotificationContext } from '../../utils/notificationContext';
+import { useContext } from 'react'
+import { NotificationContext } from '../../utils/notificationContext'
 import Loading from '../Loading/Loading'
+import { UserContext } from '../../utils/userContext'
 
 const Login = () => {
 
   const { setSnackbarMessage, setSnackbarSeverity, setSnackbarState } = useContext(NotificationContext)
+  const { user, setUser } = useContext(UserContext)
   const [rememberMe, setRememberMe] = useState(false)
-  const [username, setUsername] = useState(localStorage.getItem('usernameRemember') || '')
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false)
   
   useEffect(() => {
-    const savedUsername = localStorage.getItem('usernameRemember')
-    if (savedUsername) {
-      setUsername(savedUsername);
-      setRememberMe(true);
+    if (user) {
+      setRememberMe(true)
     }
   }, [])
 
@@ -39,7 +38,7 @@ const Login = () => {
   })
 
   const formik = useFormik({
-    initialValues: { username: username, password: '' },
+    initialValues: { username: user, password: '' },
     validationSchema: validationSchema,
     onSubmit: (values) => handleSubmit(values)
   })
@@ -47,19 +46,18 @@ const Login = () => {
   const handleSubmit = async (values) => {
     setLoading(true)
     if (rememberMe) {
-      localStorage.setItem('usernameRemember', values.username);
+      setUser(values.username)
     } else {
-      localStorage.removeItem('usernameRemember');
+      setUser('')
     }
     try {
       let res = await authenticate(values)
-      console.log(res)
       if (res.status == 200) {
         localStorage.setItem('access', res.data.token)
         localStorage.setItem('username', res.data.username)
         localStorage.setItem('user_id', res.data.userid)
         setLoading(false)
-        navigate("/");
+        navigate("/")
       } else if (res.status == 401) {
         setSnackbarMessage('Error en la autenticación')
         setSnackbarSeverity('error')

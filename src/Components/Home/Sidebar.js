@@ -9,7 +9,7 @@ import {
     ListItemButton,
     Drawer,
    
-} from '@mui/material';
+} from '@mui/material'
 import HomeIcon from '@mui/icons-material/Home'
 import { Link } from "react-router-dom"
 import PeopleIcon from '@mui/icons-material/People'

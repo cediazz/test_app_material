@@ -6,13 +6,13 @@ import {
   FormControl,
   InputLabel,
   FormHelperText
-} from '@mui/material';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+} from '@mui/material'
+import Visibility from '@mui/icons-material/Visibility'
+import VisibilityOff from '@mui/icons-material/VisibilityOff'
 
 function PasswordField(props) {
 
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false)
 
   const handleClickShowPassword = () => setShowPassword((show) => !show)
 
@@ -21,7 +21,7 @@ function PasswordField(props) {
       {props.formik.touched.password && Boolean(props.formik.errors.password) ?
         <InputLabel htmlFor="outlined-adornment-password">
           <div style={{ color: '#D32F2F' }}>Password</div>
-          </InputLabel> :
+        </InputLabel> :
         <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
       }
       <OutlinedInput
