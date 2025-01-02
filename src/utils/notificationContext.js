@@ -1,12 +1,5 @@
 import { createContext, useState } from 'react';
-import {
-    Box,
-    Button,
-    Typography,
-    Snackbar,
-    Alert
-} from '@mui/material'
-import { Link } from "react-router-dom"
+import SnackbarNotification from '../Components/SnackbarNotification/SnackbarNotification';
 
 export const NotificationContext = createContext();
 
@@ -24,25 +17,21 @@ export const NotificationProvider = ({ children }) => {
     return (
         <NotificationContext.Provider value={
             {
-                snackbarMessage,
                 setSnackbarMessage,
-                snackbarSeverity,
                 setSnackbarSeverity,
-                snackbarState,
                 setSnackbarState
 
             }
         }>
             {children}
-            <Snackbar anchorOrigin={{ vertical, horizontal }} open={open}  >
-                <Alert sx={{ width: '100%' }} severity={snackbarSeverity}>
-                    {snackbarMessage}
-                    {snackbarSeverity === 'success' &&
-                        <Link to="/login" style={{ marginLeft: '2px' }}>
-                            Ya puede autenticarse
-                        </Link>}
-                </Alert>
-            </Snackbar>
+            <SnackbarNotification
+                vertical={vertical}
+                horizontal={horizontal}
+                open={open}
+                setSnackbarState={setSnackbarState}
+                snackbarSeverity={snackbarSeverity}
+                snackbarMessage={snackbarMessage}
+            />
         </NotificationContext.Provider>
 
     );

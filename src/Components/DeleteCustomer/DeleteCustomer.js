@@ -9,7 +9,6 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
-import { useNavigate } from "react-router-dom"
 import DeleteData from '../../utils/deleteData';
 import { useContext } from 'react';
 import { NotificationContext } from '../../utils/notificationContext';
@@ -19,16 +18,9 @@ export default function DeleteCustomer(props) {
     const [open, setOpen] = React.useState(false);
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-    const navigate = useNavigate()
     const accessToken = localStorage.getItem('access')
     const deleteUrl = `https://pruebareactjs.test-class.com/Api/api/Cliente/Eliminar/${props.customer.id}`
-    const { 
-        snackbarMessage,
-        setSnackbarMessage,
-        snackbarSeverity,
-        setSnackbarSeverity,
-        setSnackbarState
-        } = useContext(NotificationContext)
+    const { setSnackbarMessage,setSnackbarSeverity,setSnackbarState} = useContext(NotificationContext)
 
     const handleClickOpen = () => {
         setOpen(true);
