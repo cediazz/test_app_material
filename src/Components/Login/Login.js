@@ -1,12 +1,10 @@
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Box,
   Button,
   Checkbox,
   FormControlLabel,
   Typography,
-  Snackbar,
-  Alert
 } from '@mui/material';
 import { Link } from "react-router-dom"
 import * as Yup from 'yup';
@@ -15,16 +13,12 @@ import PasswordField from '../PasswordField/PasswordField'
 import { useFormik } from 'formik';
 import authenticate from '../../utils/authentication';
 import { useNavigate } from "react-router-dom";
+import { useContext } from 'react';
+import { NotificationContext } from '../../utils/notificationContext';
 
 const Login = () => {
-  
-  const [snackbarState, setSnackbarState] = useState({
-    open: false,
-    vertical: 'top',
-    horizontal: 'center',
-  });
-  const { vertical, horizontal, open } = snackbarState
-  const [snackbarMessage, setSnackbarMessage] = useState('')
+
+  const { setSnackbarMessage, setSnackbarSeverity, setSnackbarState } = useContext(NotificationContext)
   const [rememberMe, setRememberMe] = useState(false)
   const [username, setUsername] = useState(localStorage.getItem('usernameRemember') || '')
   const navigate = useNavigate();
@@ -43,12 +37,12 @@ const Login = () => {
   })
 
   const formik = useFormik({
-    initialValues: { username: username , password: '' },
+    initialValues: { username: username, password: '' },
     validationSchema: validationSchema,
     onSubmit: (values) => handleSubmit(values)
   })
 
-  const  handleSubmit = async  (values) => {
+  const handleSubmit = async (values) => {
     if (rememberMe) {
       localStorage.setItem('usernameRemember', values.username);
     } else {
@@ -64,13 +58,15 @@ const Login = () => {
         navigate("/");
       } else if (res.status == 401) {
         setSnackbarMessage('Error en la autenticación')
+        setSnackbarSeverity('error')
         setSnackbarState(prev => ({ ...prev, open: true }))
       }
-  }
-  catch (error) {
-    setSnackbarMessage('Error')
-    setSnackbarState(prev => ({ ...prev, open: true }))
-  }
+    }
+    catch (error) {
+      setSnackbarMessage('Error')
+      setSnackbarSeverity('error')
+      setSnackbarState(prev => ({ ...prev, open: true }))
+    }
   }
 
   return (
@@ -89,48 +85,42 @@ const Login = () => {
         Iniciar Sesión
       </Typography>
       <form onSubmit={formik.handleSubmit}>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                width: '300px',
-                bgcolor: 'white',
-                borderRadius: '8px',
-                boxShadow: 3,
-                p: 3,
-              }}
-            >
-              <UsernameField formik={formik} />
-              <PasswordField formik={formik} />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={rememberMe}
-                    onChange={(e) => {
-                      setRememberMe(e.target.checked);
-                      }}
-                    color="primary"
-                  />
-                }
-                label="Recuérdame"
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: '300px',
+            bgcolor: 'white',
+            borderRadius: '8px',
+            boxShadow: 3,
+            p: 3,
+          }}
+        >
+          <UsernameField formik={formik} />
+          <PasswordField formik={formik} />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={rememberMe}
+                onChange={(e) => {
+                  setRememberMe(e.target.checked)
+                }}
+                color="primary"
               />
-              <Button variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
-                Iniciar Sesión
-              </Button>
-              <Typography variant="body2" sx={{ mt: 2 }}>
-                <Link to="/Register">
-                  ¿No tiene una cuenta? Regístrese
-                </Link>
-              </Typography>
-            </Box>
-          </form>
-          {/* Snackbar for notifications */}
-      <Snackbar anchorOrigin={{ vertical, horizontal }} open={open}  >
-        <Alert sx={{ width: '100%' }} severity={'error'}>
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
-      </Box>
+            }
+            label="Recuérdame"
+          />
+          <Button variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
+            Iniciar Sesión
+          </Button>
+          <Typography variant="body2" sx={{ mt: 2 }}>
+            <Link to="/Register">
+              ¿No tiene una cuenta? Regístrese
+            </Link>
+          </Typography>
+        </Box>
+      </form>
+    </Box>
   )
 }
 

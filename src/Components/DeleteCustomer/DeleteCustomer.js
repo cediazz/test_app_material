@@ -42,7 +42,7 @@ export default function DeleteCustomer(props) {
 
         }
         catch (error) {
-            setSnackbarMessage('Ocurrió algun error en la operación')
+            setSnackbarMessage('Ocurrió algún error en la operación')
             setSnackbarSeverity('error')
             setSnackbarState(prev => ({ ...prev, open: true }))
             setOpen(false)

@@ -11,20 +11,14 @@ import PasswordField from '../PasswordField/PasswordField'
 import { useFormik } from 'formik';
 import EmailField from '../EmailField/EmailField';
 import axios from 'axios'
-import { useState } from 'react'
 import { Link } from "react-router-dom"
+import { useContext } from 'react';
+import { NotificationContext } from '../../utils/notificationContext';
 
 const Register = () => {
 
 
-  const [snackbarState, setSnackbarState] = useState({
-    open: false,
-    vertical: 'top',
-    horizontal: 'center',
-  });
-  const { vertical, horizontal, open } = snackbarState
-  const [snackbarMessage, setSnackbarMessage] = useState('')
-  const [snackbarSeverity, setSnackbarSeverity] = useState('success')
+  const { setSnackbarMessage,setSnackbarSeverity,setSnackbarState} = useContext(NotificationContext)
 
   const validationSchema = Yup.object().shape({
     username: Yup.string().required('Se requiere nombre de usuario'),
@@ -96,18 +90,13 @@ const Register = () => {
           <Button variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
             Registrarme
           </Button>
+          <Typography variant="body2" sx={{ mt: 2 }}>
+                <Link to="/login">
+                  ¿Ya tiene una cuenta? autentíquese aquí
+                </Link>
+              </Typography>
         </Box>
       </form>
-      {/* Snackbar for notifications */}
-      <Snackbar anchorOrigin={{ vertical, horizontal }} open={open}  >
-        <Alert sx={{ width: '100%' }} severity={snackbarSeverity}>
-          {snackbarMessage}
-          {snackbarSeverity === 'success' &&
-            <Link to="/login" style={{ marginLeft: '2px' }}>
-              Ya puede autenticarse
-            </Link>}
-        </Alert>
-      </Snackbar>
     </Box>
 
   )

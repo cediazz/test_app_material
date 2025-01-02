@@ -1,8 +1,4 @@
-import {
-    Button,
-   
-   
-} from '@mui/material'
+import {Button} from '@mui/material'
 import Grid from '@mui/material/Grid2'
 import Stack from '@mui/material/Stack';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -19,6 +15,8 @@ import ImageCustomersField from '../ImageCustomersField/ImageCustomersField';
 import { useParams } from 'react-router-dom';
 import getData from '../../utils/getData';
 import formatDateToInput from '../../utils/formatDate';
+import { useContext } from 'react';
+import { NotificationContext } from '../../utils/notificationContext';
 
 const CustomersMaintenance = () => {
 
@@ -29,7 +27,7 @@ const CustomersMaintenance = () => {
     const createCustomerurl = 'https://pruebareactjs.test-class.com/Api/api/Cliente/Crear'
     const updateCustomerurl = 'https://pruebareactjs.test-class.com/Api/api/Cliente/Actualizar'
     const getCustomerurl = `https://pruebareactjs.test-class.com/Api/api/Cliente/Obtener/${custId}`
-    
+    const { setSnackbarMessage,setSnackbarSeverity,setSnackbarState} = useContext(NotificationContext)
 
     useEffect(() => {
         if (!localStorage.getItem('username'))
@@ -117,6 +115,9 @@ const CustomersMaintenance = () => {
             let res = await postData(createCustomerurl, values, accessToken)
             if (res.status === 200) {
                 navigate('/customers')
+                setSnackbarMessage('Se agregó el cliente')
+                setSnackbarSeverity('success')
+                setSnackbarState(prev => ({ ...prev, open: true }))
             }
 
 
@@ -141,6 +142,9 @@ const CustomersMaintenance = () => {
             console.log(res)
             if (res.status === 200) {
                 navigate('/customers')
+                setSnackbarMessage('Se actualizó el cliente')
+                setSnackbarSeverity('success')
+                setSnackbarState(prev => ({ ...prev, open: true }))
             }
 
 
