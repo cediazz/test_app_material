@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid2'
 import Stack from '@mui/material/Stack';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Link } from "react-router-dom"
-import { useEffect, } from 'react';
+import { useEffect,useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import postData from '../../utils/postData';
 import Container from '@mui/material/Container';
@@ -17,6 +17,7 @@ import getData from '../../utils/getData';
 import formatDateToInput from '../../utils/formatDate';
 import { useContext } from 'react';
 import { NotificationContext } from '../../utils/notificationContext';
+import Loading from '../Loading/Loading'
 
 const CustomersMaintenance = () => {
 
@@ -28,7 +29,8 @@ const CustomersMaintenance = () => {
     const updateCustomerurl = 'https://pruebareactjs.test-class.com/Api/api/Cliente/Actualizar'
     const getCustomerurl = `https://pruebareactjs.test-class.com/Api/api/Cliente/Obtener/${custId}`
     const { setSnackbarMessage,setSnackbarSeverity,setSnackbarState} = useContext(NotificationContext)
-
+    const [loading, setLoading] = useState(false)
+    
     useEffect(() => {
         if (!localStorage.getItem('username'))
             navigate("/login")
@@ -72,7 +74,7 @@ const CustomersMaintenance = () => {
     })
 
     const getcustomer = async () => {
-
+        setLoading(true)
         try {
 
             let res = await getData(getCustomerurl,accessToken)
@@ -91,11 +93,13 @@ const CustomersMaintenance = () => {
                 formik.setFieldValue('resennaPersonal', data.resenaPersonal);
                 formik.setFieldValue('interesFK', data.interesesId);
                 formik.setFieldValue('imagen', data.imagen);
+                setLoading(false)
             }
 
 
         }
         catch (error) {
+            setLoading(false)
             if (error.status == 401)
                 navigate('/login')
             else
@@ -108,8 +112,8 @@ const CustomersMaintenance = () => {
 
     const addcustomer = async (values) => {
 
+        setLoading(true)
         values['usuarioId'] = userId
-        
         try {
 
             let res = await postData(createCustomerurl, values, accessToken)
@@ -118,11 +122,13 @@ const CustomersMaintenance = () => {
                 setSnackbarMessage('Se agregó el cliente')
                 setSnackbarSeverity('success')
                 setSnackbarState(prev => ({ ...prev, open: true }))
+                setLoading(false)
             }
 
 
         }
         catch (error) {
+            setLoading(false)
             if (error.status == 401)
                 navigate('/login')
             else
@@ -134,6 +140,7 @@ const CustomersMaintenance = () => {
 
     const updatecustomer = async (values) => {
 
+        setLoading(true)
         values['usuarioId'] = userId
         values['id'] = custId
         try {
@@ -145,11 +152,13 @@ const CustomersMaintenance = () => {
                 setSnackbarMessage('Se actualizó el cliente')
                 setSnackbarSeverity('success')
                 setSnackbarState(prev => ({ ...prev, open: true }))
+                setLoading(false)
             }
 
 
         }
         catch (error) {
+            setLoading(false)
             if (error.status == 401)
                 navigate('/login')
             else
@@ -162,6 +171,7 @@ const CustomersMaintenance = () => {
     
 
     return (
+        loading ? <Loading /> :
         <Container fixed
 
             sx={{

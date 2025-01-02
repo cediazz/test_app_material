@@ -14,10 +14,12 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import postData from '../../utils/postData';
 import Container from '@mui/material/Container';
+import Loading from '../Loading/Loading'
 
 const Customers = () => {
 
     const [customers, setCustomers] = useState([])
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
     const accessToken = localStorage.getItem('access')
     const [formData, setFormData] = useState({
@@ -29,15 +31,17 @@ const Customers = () => {
 
 
     const getcustomers = async () => {
-
+        setLoading(true)
         try {
 
             let res = await postData(url, formData, accessToken)
             console.log(res)
             if (res.status == 200)
                 setCustomers(res.data)
+            setLoading(false)
         }
         catch (error) {
+            setLoading(false)
             if (error.status == 401)
                 navigate('/login')
             else
@@ -58,6 +62,7 @@ const Customers = () => {
     }, [formData])
 
     return (
+        loading ? <Loading /> :
         <Container fixed
             sx={{
                 bgcolor: 'white',
@@ -97,6 +102,7 @@ const Customers = () => {
             <CustomersSearch setFormData={setFormData} />
             <CustomersTable customers={customers} />
         </Container>
+        
     )
 }
 export default Customers

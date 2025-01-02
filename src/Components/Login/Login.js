@@ -15,6 +15,7 @@ import authenticate from '../../utils/authentication';
 import { useNavigate } from "react-router-dom";
 import { useContext } from 'react';
 import { NotificationContext } from '../../utils/notificationContext';
+import Loading from '../Loading/Loading'
 
 const Login = () => {
 
@@ -22,7 +23,8 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(false)
   const [username, setUsername] = useState(localStorage.getItem('usernameRemember') || '')
   const navigate = useNavigate();
-
+  const [loading, setLoading] = useState(false)
+  
   useEffect(() => {
     const savedUsername = localStorage.getItem('usernameRemember')
     if (savedUsername) {
@@ -43,6 +45,7 @@ const Login = () => {
   })
 
   const handleSubmit = async (values) => {
+    setLoading(true)
     if (rememberMe) {
       localStorage.setItem('usernameRemember', values.username);
     } else {
@@ -55,17 +58,20 @@ const Login = () => {
         localStorage.setItem('access', res.data.token)
         localStorage.setItem('username', res.data.username)
         localStorage.setItem('user_id', res.data.userid)
+        setLoading(false)
         navigate("/");
       } else if (res.status == 401) {
         setSnackbarMessage('Error en la autenticación')
         setSnackbarSeverity('error')
         setSnackbarState(prev => ({ ...prev, open: true }))
+        setLoading(false)
       }
     }
     catch (error) {
       setSnackbarMessage('Error')
       setSnackbarSeverity('error')
       setSnackbarState(prev => ({ ...prev, open: true }))
+      setLoading(false)
     }
   }
 
@@ -81,6 +87,8 @@ const Login = () => {
         p: 2,
       }}
     >
+      {loading ? <Loading /> :
+      <>
       <Typography variant="h4" gutterBottom>
         Iniciar Sesión
       </Typography>
@@ -120,6 +128,8 @@ const Login = () => {
           </Typography>
         </Box>
       </form>
+      </>
+      }
     </Box>
   )
 }

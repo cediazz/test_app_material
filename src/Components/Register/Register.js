@@ -2,8 +2,6 @@ import {
   Box,
   Button,
   Typography,
-  Snackbar,
-  Alert
 } from '@mui/material';
 import * as Yup from 'yup';
 import UsernameField from '../UsernameField/UsernameField'
@@ -12,14 +10,16 @@ import { useFormik } from 'formik';
 import EmailField from '../EmailField/EmailField';
 import axios from 'axios'
 import { Link } from "react-router-dom"
-import { useContext } from 'react';
+import { useContext,useState } from 'react';
 import { NotificationContext } from '../../utils/notificationContext';
+import Loading from '../Loading/Loading'
 
 const Register = () => {
 
 
   const { setSnackbarMessage,setSnackbarSeverity,setSnackbarState} = useContext(NotificationContext)
-
+  const [loading, setLoading] = useState(false)
+  
   const validationSchema = Yup.object().shape({
     username: Yup.string().required('Se requiere nombre de usuario'),
     password: Yup.string()
@@ -40,7 +40,7 @@ const Register = () => {
   })
 
   const handleSubmit = async (values) => {
-
+    setLoading(true)
     try {
       let res = await axios.post('https://pruebareactjs.test-class.com/Api/api/Authenticate/register', values)
       console.log(res)
@@ -48,12 +48,14 @@ const Register = () => {
         setSnackbarMessage(res.data.message)
         setSnackbarSeverity('success');
         setSnackbarState(prev => ({ ...prev, open: true }))
+        setLoading(false)
       }
     }
     catch (error) {
       setSnackbarMessage('Error en el registro. Inténtalo de nuevo.')
       setSnackbarSeverity('error')
       setSnackbarState(prev => ({ ...prev, open: true }))
+      setLoading(false)
     }
   }
 
@@ -69,6 +71,8 @@ const Register = () => {
         p: 2,
       }}
     >
+      {loading ? <Loading /> :
+      <>
       <Typography variant="h4" gutterBottom>
         Registro
       </Typography>
@@ -97,6 +101,8 @@ const Register = () => {
               </Typography>
         </Box>
       </form>
+      </>
+      }
     </Box>
 
   )
